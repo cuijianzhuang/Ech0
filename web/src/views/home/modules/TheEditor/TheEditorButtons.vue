@@ -48,15 +48,16 @@
     </div>
 
     <div class="flex flex-row items-center gap-2">
-      <!-- Clear -->
-      <!-- <div>
-            <BaseButton
-              :icon="Clear"
-              @click="handleClear"
-              class="w-8 h-8 rounded-md"
-              title="清空输入和图片"
-            />
-          </div> -->
+      <!-- Published Info -->
+      <div v-if="hasContent || hasImage || hasExtension" class="relative group">
+        <Info class="w-6 h-6 text-[var(--text-color-200)]" />
+        <div
+          class="absolute right-0 top-full z-10 mt-1 hidden whitespace-nowrap rounded-md bg-[var(--text-color-900)] px-2 py-1 text-xs text-white shadow-lg group-hover:block"
+        >
+          {{ infoTooltip }}
+        </div>
+      </div>
+
       <!-- Publish -->
       <div
         v-if="
@@ -120,18 +121,48 @@ import Publish from '@/components/icons/publish.vue'
 import Update from '@/components/icons/update.vue'
 import ExitUpdate from '@/components/icons/exitupdate.vue'
 import Back from '@/components/icons/back.vue'
+import Info from '@/components/icons/info.vue'
 import BaseButton from '@/components/common/BaseButton.vue'
 import BaseCombobox from '@/components/common/BaseCombobox.vue'
-import { ImageSource, Mode } from '@/enums/enums'
+import { ImageSource, Mode, ExtensionType } from '@/enums/enums'
 import { storeToRefs } from 'pinia'
 import { useEditorStore, useEchoStore } from '@/stores'
 import { theToast } from '@/utils/toast'
 import { localStg } from '@/utils/storage'
+import { computed } from 'vue'
 
 const editorStore = useEditorStore()
-const { currentMode, isUpdateMode, echoToAdd, imageToAdd, tagToAdd } = storeToRefs(editorStore)
+const {
+  currentMode,
+  isUpdateMode,
+  echoToAdd,
+  imageToAdd,
+  tagToAdd,
+  hasContent,
+  hasImage,
+  hasExtension,
+  extensionToAdd,
+} = storeToRefs(editorStore)
 const echoStore = useEchoStore()
 const { tagOptions } = storeToRefs(echoStore)
+
+const infoTooltip = computed(() => {
+  const extType = extensionToAdd.value.extension_type || echoToAdd.value.extension_type
+  const extLabelMap: Record<ExtensionType, string> = {
+    [ExtensionType.MUSIC]: '音乐',
+    [ExtensionType.VIDEO]: '视频',
+    [ExtensionType.GITHUBPROJ]: 'GitHub 项目',
+    [ExtensionType.WEBSITE]: '网站链接',
+  }
+
+  const parts: string[] = []
+  if (hasContent.value) parts.push('文字')
+  if (hasImage.value) parts.push('图片')
+  if (hasExtension.value)
+    parts.push(extType ? extLabelMap[extType as ExtensionType] || '扩展' : '扩展')
+
+  return parts.length ? `已添加：${parts.join('、')}` : '尚未添加内容'
+})
 
 const handleAddorUpdate = () => {
   editorStore.handleAddOrUpdate()

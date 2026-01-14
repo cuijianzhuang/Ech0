@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { theToast } from '@/utils/toast'
 import { fetchAddEcho, fetchUpdateEcho, fetchAddTodo, fetchGetMusic } from '@/service/api'
 import { Mode, ExtensionType, ImageSource, ImageLayout } from '@/enums/enums'
@@ -41,6 +41,23 @@ export const useEditorStore = defineStore('editorStore', () => {
     extension: null, // 拓展内容（对于扩展类型所需的数据）
     extension_type: null, // 拓展内容类型（音乐/视频/链接/GITHUB项目）
   })
+
+  const hasContent = computed(() => !!echoToAdd.value.content?.trim()) // 是否已填写内容
+  const hasImage = computed(() => imagesToAdd.value.length > 0) // 是否已添加图片
+  const hasExtension = computed(() => {
+    // 适合 Music/Video/Github
+    const ext = extensionToAdd.value.extension
+    const extType = extensionToAdd.value.extension_type
+
+    // Website 多一层检测
+    if (extType === ExtensionType.WEBSITE) {
+      const { title, site } = websiteToAdd.value
+      return !!title && !!site
+    }
+
+    return !!ext && !!extType
+  })
+
   //================================================================
   // 编辑器数据状态管理(待添加的Todo)
   //================================================================
@@ -424,6 +441,10 @@ export const useEditorStore = defineStore('editorStore', () => {
 
     echoToAdd,
     todoToAdd,
+
+    hasContent,
+    hasImage,
+    hasExtension,
 
     imageToAdd,
     imagesToAdd,
