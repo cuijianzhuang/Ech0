@@ -10,7 +10,6 @@ func setupCommonRoutes(appRouterGroup *AppRouterGroup, h *di.Handlers) {
 	appRouterGroup.PublicRouterGroup.GET("/getmusic", h.CommonHandler.GetPlayMusic())
 	appRouterGroup.PublicRouterGroup.GET("/playmusic", h.CommonHandler.PlayMusic)
 	appRouterGroup.PublicRouterGroup.GET("/hello", h.CommonHandler.HelloEch0())
-	appRouterGroup.PublicRouterGroup.GET("/healthz", h.CommonHandler.HelloEch0())
 	appRouterGroup.PublicRouterGroup.GET("/backup/export", h.BackupHandler.ExportBackup())
 	appRouterGroup.PublicRouterGroup.GET("/website/title", h.CommonHandler.GetWebsiteTitle())
 
