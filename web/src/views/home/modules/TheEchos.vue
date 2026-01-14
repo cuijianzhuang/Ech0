@@ -44,7 +44,7 @@
         v-if="!echoStore.hasMore && !echoStore.isLoading"
         class="mx-auto my-5 text-center font-serif"
       >
-        <span class="text-xl text-[var(--text-color-400)]">没有啦！🥲</span>
+        <p class="text-xl text-[var(--text-color-400)] flex items-center justify-center">没有啦！<Flowers /></p>
       </div>
     </Transition>
     <!-- 加载中 -->
@@ -71,6 +71,7 @@ import { useEchoStore, useSettingStore } from '@/stores'
 import BaseButton from '@/components/common/BaseButton.vue'
 import { storeToRefs } from 'pinia'
 import TheBackTop from '@/components/advanced/TheBackTop.vue'
+import Flowers from '@/components/icons/flowers.vue'
 
 const echoStore = useEchoStore()
 const settingStore = useSettingStore()

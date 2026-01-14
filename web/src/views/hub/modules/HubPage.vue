@@ -26,12 +26,15 @@
       <div v-if="isLoading || isPreparing" class="my-6">
         <p class="text-[var(--text-color-500)] text-center">加载中...</p>
       </div>
-      <div v-else-if="echoList.length === 0 && !isPreparing && !isLoading" class="my-6">
+      <div
+        v-else-if="echoList.length === 0 && hasTriedInitialLoad && !isPreparing && !isLoading"
+        class="my-6"
+      >
         <p class="text-[var(--text-color-500)] text-center">暂无数据，快去添加Connect吧🙃</p>
       </div>
 
       <div v-if="echoList.length > 0 && !hasMore" class="my-6">
-        <p class="text-[var(--text-color-500)] text-center">没有更多数据了🙃</p>
+        <p class="text-[var(--text-color-500)] text-center flex items-center justify-center">没有更多数据了<Flowers /></p>
       </div>
     </div>
 
@@ -50,6 +53,7 @@ import BaseButton from '@/components/common/BaseButton.vue'
 import Arrow from '@/components/icons/arrow.vue'
 import TheBackTop from '@/components/advanced/TheBackTop.vue'
 import TheHubEcho from '@/components/advanced/TheHubEcho.vue'
+import Flowers from '@/components/icons/flowers.vue'
 import { onMounted, watch, computed, ref, onBeforeUnmount, nextTick } from 'vue'
 import { useHubStore } from '@/stores'
 import { storeToRefs } from 'pinia'
@@ -75,7 +79,7 @@ const getButtonClasses = (routeName: string, isBackButton = false) => {
 }
 
 const hubStore = useHubStore()
-const { echoList, isLoading, isPreparing, hasMore } = storeToRefs(hubStore)
+const { echoList, isLoading, isPreparing, hasMore, hasTriedInitialLoad } = storeToRefs(hubStore)
 
 const mainColumn = ref<HTMLElement | null>(null)
 const backTopStyle = ref({ right: '100px' }) // 默认 fallback

@@ -32,6 +32,7 @@ export const useHubStore = defineStore('hubStore', () => {
 
   const isPreparing = ref<boolean>(true) // 是否正在准备数据
   const isLoading = ref<boolean>(false) // 是否正在加载数据
+  const hasTriedInitialLoad = ref<boolean>(false) // 是否已尝试过首次加载（用于空态展示）
   const pageSize = ref<number>(10) // 每个 Hub 每次请求的数量
   const batchSize = ref<number>(10) // 每次归并取数的数量
   const hasMore = ref<boolean>(true) // 是否还有更多数据可加载
@@ -43,6 +44,7 @@ export const useHubStore = defineStore('hubStore', () => {
   // 1. 获取hubList
   const getHubList = async () => {
     isPreparing.value = true
+    hasTriedInitialLoad.value = false
     await connectStore.getConnect()
 
     hubList.value = connectStore.connects
@@ -156,9 +158,9 @@ export const useHubStore = defineStore('hubStore', () => {
     hubList.value = validHubs
 
     // 提示用户
-    if (failedHubs.length > 0) {
-      theToast.warning(`${failedHubs.length} 个实例不可用，已自动排除`)
-    }
+    // if (failedHubs.length > 0) {
+    //   theToast.warning(`${failedHubs.length} 个实例不可用，已自动排除`)
+    // }
 
     // 处理结果
     if (hubList.value.length === 0) {
@@ -240,6 +242,7 @@ export const useHubStore = defineStore('hubStore', () => {
     )
     if (!canLoadMore) {
       hasMore.value = false
+      hasTriedInitialLoad.value = true
       return
     }
 
@@ -313,6 +316,7 @@ export const useHubStore = defineStore('hubStore', () => {
       }
     } finally {
       isLoading.value = false
+      hasTriedInitialLoad.value = true
     }
   }
 
@@ -324,6 +328,7 @@ export const useHubStore = defineStore('hubStore', () => {
     hubStates,
     isLoading,
     isPreparing,
+    hasTriedInitialLoad,
     pageSize,
     batchSize,
     hasMore,
