@@ -44,7 +44,9 @@
         v-if="!echoStore.hasMore && !echoStore.isLoading"
         class="mx-auto my-5 text-center font-serif"
       >
-        <p class="text-xl text-[var(--text-color-400)] flex items-center justify-center">没有啦！<Flowers /></p>
+        <p class="text-xl text-[var(--text-color-400)] flex items-center justify-center">
+          没有啦！<Flowers />
+        </p>
       </div>
     </Transition>
     <!-- 加载中 -->

@@ -18,7 +18,9 @@
     </div>
     <!-- 没有更多 -->
     <div v-if="!hasMore && !loading" class="mx-auto my-5 text-center">
-      <p class="text-xl text-[var(--text-color-400)] flex items-center justify-center">没有啦！<Flowers /></p>
+      <p class="text-xl text-[var(--text-color-400)] flex items-center justify-center">
+        没有啦！<Flowers />
+      </p>
     </div>
     <!-- 加载中 -->
     <div v-if="loading" class="mx-auto my-5 text-center">

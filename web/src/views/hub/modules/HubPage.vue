@@ -34,7 +34,9 @@
       </div>
 
       <div v-if="echoList.length > 0 && !hasMore" class="my-6">
-        <p class="text-[var(--text-color-500)] text-center flex items-center justify-center">没有更多数据了<Flowers /></p>
+        <p class="text-[var(--text-color-500)] text-center flex items-center justify-center">
+          没有更多数据了<Flowers />
+        </p>
       </div>
     </div>
 
